@@ -74,5 +74,8 @@ def cropImg(img):
 
 if __name__ == "__main__":
     img = cv2.imread("./imageSeg/testImgs/phoneTest.jpg")
+    orig = cv2.imread("./imageSeg/testImgs/borderTest.jpg")
+    pre = cleanImg(orig)
+    cv2.imwrite("./imageSeg/testImgs/borderTestCleaned.jpg", pre)
     final = cleanImg(img)
     cv2.imwrite("./imageSeg/testImgs/phoneTestCleaned.jpg", final)
