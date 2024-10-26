@@ -1,59 +1,102 @@
 ﻿@page
 @model QRKiller.Pages.CaptureModel
 @{
-    ViewData["Title"] = "Capture Image from Camera";
+    ViewData["Title"] = "Capture and Upload Image";
 }
 
-<h2>Capture Image from Camera</h2>
+<h2>Capture and Upload Image</h2>
 
-<video id="video" autoplay playsinline></video>
+<!-- Video feed for capturing from camera -->
+<video id="video" autoplay playsinline style="display:block; width: 300px;"></video>
+<button id="captureButton" class="btn btn-primary">Capture Image</button>
+
+<!-- Display captured image -->
+<h3>Captured Image</h3>
 <canvas id="canvas" style="display:none;"></canvas>
-<button id="captureButton" type="button" class="btn btn-primary">Capture</button>
+<img id="capturedImage" style="display:block; width: 300px; margin-top: 10px;" />
 
-<form method="post" enctype="multipart/form-data" style="display:none;" id="uploadForm">
-    <input type="hidden" name="CameraCapture" id="imageData">
-    <button type="submit" class="btn btn-success">Upload Image</button>
-</form>
-
-@if (Model.UploadSuccess)
-{
-    <p class="text-success">Image captured and uploaded successfully!</p>
-    <img src="/images/captures/@Model.UploadedFileName" alt="Captured Image" class="img-thumbnail" />
-}
-else if (!string.IsNullOrEmpty(Model.ErrorMessage))
-{
-    <p class="text-danger">@Model.ErrorMessage</p>
-}
+<!-- Button to upload image -->
+<button onclick="uploadCapturedImage()" class="btn btn-success">Upload Captured Image</button>
+<div id="uploadMessage"></div>
+<div id="imageName"></div>
 
 <script>
     const video = document.getElementById('video');
     const canvas = document.getElementById('canvas');
     const captureButton = document.getElementById('captureButton');
-    const uploadForm = document.getElementById('uploadForm');
-    const imageData = document.getElementById('imageData');
+    const capturedImage = document.getElementById('capturedImage');
+    const device_list= [];
 
-    // Access the camera
-    navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => {
-            video.srcObject = stream;
-        })
-        .catch(error => {
-            console.error("Camera access denied:", error);
-        });
+    // Access the camera and start the video feed
+async function startCamera() {
+    const video = document.getElementById('video');
 
-    // Capture the image from the video
+    try {
+        // Enumerate all video input devices (cameras)
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const backCamera = devices.find(device => device.kind === 'videoinput' && device.label.toLowerCase().includes('back'));
+         
+        const constraints = backCamera ? 
+            { video: { deviceId: { exact: backCamera.deviceId } } } : 
+            { video: { facingMode: { ideal: "environment" } } };  // Fallback if back camera is unavailable
+
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        video.srcObject = stream;
+    } catch (error) {
+        console.error("Error accessing camera:", error);
+        alert("Could not access the back camera.");
+    }
+}
+    startCamera();
+
+    // Capture the image from the video feed
     captureButton.addEventListener('click', () => {
         const context = canvas.getContext('2d');
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-        // Convert canvas image to a data URL and set it in the hidden form
+        // Convert canvas to image data URL and display it
         const imageUrl = canvas.toDataURL('image/png');
-        imageData.value = imageUrl;
-
-        // Show the upload form
-        uploadForm.style.display = 'block';
+        capturedImage.src = imageUrl;
+        capturedImage.style.display = 'block';
     });
-</script>
 
+    function uuidv4() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+            .replace(/[xy]/g, function (c) {
+                const r = Math.random() * 16 | 0,
+                    v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+    }
+    async function uploadCapturedImage() {
+        // Get the image data from the canvas
+        const imageDataUrl = canvas.toDataURL('image/png');
+
+        // Convert Base64 URL to binary
+        const response = await fetch(imageDataUrl);
+        const blob = await response.blob();
+        const imageName = uuidv4();
+
+        // Send image blob to the server
+        try {
+            const uploadResponse = await fetch('/images/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/octet-stream',
+                    'Image-Name': imageName
+                },
+                body: blob
+            });
+
+            if (!uploadResponse.ok) throw new Error('Image upload failed');
+
+            document.getElementById('uploadMessage').innerText = 'Image uploaded successfully';
+            document.getElementById('imageName').innerText = imageName.toString();
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            document.getElementById('uploadMessage').innerText = 'Image upload failed.';
+        }
+    }
+</script>

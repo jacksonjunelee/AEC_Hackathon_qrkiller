@@ -23,9 +23,9 @@ namespace QRKiller.Core.Services
                 .SetSlidingExpiration(TimeSpan.FromMinutes(10)); // Cache for 10 minutes
         }
 
-        private void AddImageToCache(string cacheKey, byte[] imageBytes)
+        private void AddImageToCache(string cacheKey, byte[] imageByte)
         {
-            _cache.Set(cacheKey, imageBytes, memoryCacheEntryOptions);
+            _cache.Set(cacheKey, imageByte, memoryCacheEntryOptions);
         }
 
         public byte[] GetImage(string cacheKey)

@@ -1,3 +1,5 @@
+using QRKiller.Core.Services;
+
 namespace QRKiller
 {
     public class Program
@@ -10,6 +12,7 @@ namespace QRKiller
             builder.Services.AddRazorPages();
 
             builder.Services.AddControllers();
+            builder.Services.AddSingleton<ImageService>();
 
             var app = builder.Build();
 
@@ -29,7 +32,10 @@ namespace QRKiller
             app.MapRazorPages();
             app.MapControllers();
 
+            //Configure setup data.
+
             app.Run();
+            
         }
     }
 }
