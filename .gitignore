@@ -1,0 +1,60 @@
+# Ignore Visual Studio temporary files, build results, and
+# user-specific files
+.vscode/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Ignore build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+
+# Ignore publish directory
+publish/
+out/
+
+# Ignore NuGet packages
+*.nupkg
+# Uncomment if you have an .nupkg dir in packages that should not be ignored
+#!packages/*/index.json
+*.snupkg
+.nuget/
+
+# Ignore Recycle Bin for VSProject
+$RECYCLE.BIN/
+
+# Ignore ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Ignore project-specific files
+project.lock.json
+project.fragment.lock.json
+
+# Ignore JetBrains Rider project files
+.idea/
+.idea_modules/
+
+# Ignore Microsoft Office temp files
+~$*
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Windows shortcut files
+*.lnk
+
+# End of the .gitignore for ASP.NET projects
