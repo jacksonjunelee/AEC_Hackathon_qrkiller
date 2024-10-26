@@ -58,3 +58,5 @@ Desktop.ini
 *.lnk
 
 # End of the .gitignore for ASP.NET projects
+
+*.pyc
