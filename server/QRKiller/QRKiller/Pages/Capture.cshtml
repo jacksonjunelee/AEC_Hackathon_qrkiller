@@ -1,0 +1,59 @@
+﻿@page
+@model QRKiller.Pages.CaptureModel
+@{
+    ViewData["Title"] = "Capture Image from Camera";
+}
+
+<h2>Capture Image from Camera</h2>
+
+<video id="video" autoplay playsinline></video>
+<canvas id="canvas" style="display:none;"></canvas>
+<button id="captureButton" type="button" class="btn btn-primary">Capture</button>
+
+<form method="post" enctype="multipart/form-data" style="display:none;" id="uploadForm">
+    <input type="hidden" name="CameraCapture" id="imageData">
+    <button type="submit" class="btn btn-success">Upload Image</button>
+</form>
+
+@if (Model.UploadSuccess)
+{
+    <p class="text-success">Image captured and uploaded successfully!</p>
+    <img src="/images/captures/@Model.UploadedFileName" alt="Captured Image" class="img-thumbnail" />
+}
+else if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <p class="text-danger">@Model.ErrorMessage</p>
+}
+
+<script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const captureButton = document.getElementById('captureButton');
+    const uploadForm = document.getElementById('uploadForm');
+    const imageData = document.getElementById('imageData');
+
+    // Access the camera
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+            video.srcObject = stream;
+        })
+        .catch(error => {
+            console.error("Camera access denied:", error);
+        });
+
+    // Capture the image from the video
+    captureButton.addEventListener('click', () => {
+        const context = canvas.getContext('2d');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        // Convert canvas image to a data URL and set it in the hidden form
+        const imageUrl = canvas.toDataURL('image/png');
+        imageData.value = imageUrl;
+
+        // Show the upload form
+        uploadForm.style.display = 'block';
+    });
+</script>
+

@@ -9,6 +9,8 @@ namespace QRKiller
             // Add services to the container.
             builder.Services.AddRazorPages();
 
+            builder.Services.AddControllers();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -21,12 +23,11 @@ namespace QRKiller
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.MapRazorPages();
+            app.MapControllers();
 
             app.Run();
         }
