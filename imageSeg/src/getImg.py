@@ -53,7 +53,7 @@ def cleanImg(img):
     images = [img, gray, blurred, edges, aligned_image]
     titles = ["Original", "Gray", "Blurred", "Edges", "Aligned"]
 
-    #display_images_grid(images, titles, 2, 3)
+    display_images_grid(images, titles, 2, 3)
     return aligned_image, edges
 
 def display(img, name):
@@ -79,7 +79,7 @@ if __name__ == "__main__":
     cv2.imwrite("./imageSeg/testImgs/control.jpg", control)
     cv2.imwrite("./imageSeg/testImgs/controlEdge.jpg", controlEdge)
     '''
-    train_path = "./imageSeg/data/train"
+    train_path = "./imageSeg/data/test"
     train_imgs = os.listdir(train_path)
 
     for index, img_name in enumerate(train_imgs):

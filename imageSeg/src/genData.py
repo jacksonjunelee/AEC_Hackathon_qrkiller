@@ -24,10 +24,7 @@ embeddings_data = []
 guids = [
     'ee908473-e374-4c88-837e-420c4bb0374b',
     '78c7ac50-dd8a-4151-871b-a599cbb649d0',
-    '29c825e1-1a62-4ded-b087-fa860cfc5743',
-    'b909a979-10ef-45d0-9739-ff2f51d09954',
-    '311dbdad-6baf-417d-a43c-01fdee38f39e',
-    '71805e4d-1579-4fce-80bc-dba31affdd41'
+    '29c825e1-1a62-4ded-b087-fa860cfc5743'
 ] 
 
 for index, img_name in enumerate(train_imgs):
