@@ -6,26 +6,34 @@
 
 <h2>Capture and Upload Image</h2>
 
-<!-- Video feed for capturing from camera -->
-<video id="video" autoplay playsinline style="display:block; width: 300px;"></video>
-<button id="captureButton" class="btn btn-primary">Capture Image</button>
-
 <div>
     <label for="Name">Name:</label>
     <input type="text" name="Name" class="form-control" required />
     <label for="Content">Content:</label>
-    <input type="text" id="content", name="Content" class="form-control" required />
+    <input type="text" id="content" , name="Content" class="form-control" required />
 </div>
 
+<h3>Preview Image</h3>
+<video id="video" autoplay playsinline style="display:block; width: 300px;"></video>
+<!-- Video feed for capturing from camera -->
+<button id="captureButton" class="btn btn-primary">Capture Image</button>
+
+<div>---------------------------------------------</div>
 <h3>Captured Image</h3>
-<canvas id="canvas" style="display:none;"></canvas>
+<div>---------------------------------------------</div>
+<div>
+    <canvas id="canvas" style="display:none;"></canvas>
+</div>
+
 <img id="capturedImage" style="display:block; width: 300px; margin-top: 10px;" />
+<div>---------------------------------------------</div>
+
+
 
 <!-- Button to upload image -->
 <button onclick="uploadCapturedImage()" class="btn btn-success">Generate QRKiller</button>
 <div id="uploadMessage"></div>
 <div id="imageName"></div>
- 
 
 
 <script>
@@ -33,28 +41,28 @@
     const canvas = document.getElementById('canvas');
     const captureButton = document.getElementById('captureButton');
     const capturedImage = document.getElementById('capturedImage');
-    const device_list= [];
+    const device_list = [];
 
     // Access the camera and start the video feed
-async function startCamera() {
-    const video = document.getElementById('video');
+    async function startCamera() {
+        const video = document.getElementById('video');
 
-    try {
-        // Enumerate all video input devices (cameras)
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        const backCamera = devices.find(device => device.kind === 'videoinput' && device.label.toLowerCase().includes('back'));
-         
-        const constraints = backCamera ? 
-            { video: { deviceId: { exact: backCamera.deviceId } } } : 
-            { video: { facingMode: { ideal: "environment" } } };  // Fallback if back camera is unavailable
+        try {
+            // Enumerate all video input devices (cameras)
+            const devices = await navigator.mediaDevices.enumerateDevices();
+            const backCamera = devices.find(device => device.kind === 'videoinput' && device.label.toLowerCase().includes('back'));
 
-        const stream = await navigator.mediaDevices.getUserMedia(constraints);
-        video.srcObject = stream;
-    } catch (error) {
-        console.error("Error accessing camera:", error);
-        alert("Could not access the back camera.");
+            const constraints = backCamera ?
+                { video: { deviceId: { exact: backCamera.deviceId } } } :
+                { video: { facingMode: { ideal: "environment" } } };  // Fallback if back camera is unavailable
+
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
+            video.srcObject = stream;
+        } catch (error) {
+            console.error("Error accessing camera:", error);
+            alert("Could not access the back camera.");
+        }
     }
-}
     startCamera();
 
     // Capture the image from the video feed
@@ -94,7 +102,7 @@ async function startCamera() {
                 headers: {
                     'Content-Type': 'application/octet-stream',
                     'Image-Name': imageName,
-                    'Content' : document.getElementById("content").value,
+                    'Content': document.getElementById("content").value,
                 },
                 body: blob
             });
@@ -105,7 +113,7 @@ async function startCamera() {
             document.getElementById('imageName').innerText = imageName.toString();
         } catch (error) {
             console.error('Error uploading image:', error);
-            document.getElementById('uploadMessage').innerText = 'Image upload failed.';
+            document.getElementById('uploadMessage').innerText = 'Image upload failed. Please fill out all data fields and ensure you capture and image.';
         }
     }
 </script>

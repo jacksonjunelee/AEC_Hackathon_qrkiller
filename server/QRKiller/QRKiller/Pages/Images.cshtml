@@ -8,10 +8,14 @@
 <h2>Image Gallery</h2>
 
 <ul>
-    @foreach (var imageName in Model.Images)
+    @foreach (var image in Model.Images)
     {
         <li>
-            <img src="/api/Image/@imageName" alt="Image" style="width:150px; height:auto;" />
+            <div>
+                <p>@image.Item2</p>
+                <img src="/api/Image/@image.Item1" alt="Image" style="width:150px; height:auto;" />
+            </div>
+            
         </li>
     }
 </ul>

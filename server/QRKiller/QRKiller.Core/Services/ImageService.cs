@@ -50,11 +50,24 @@ namespace QRKiller.Core.Services
 
         public void StoreImage(string fileName, byte[] imageBytes)
         {
-            AddImageToCache(fileName, imageBytes, "test");
+            //AddImageToCache(fileName, imageBytes, "test");
         }
         public void StoreImage(string fileName, byte[] imageBytes, string content)
         {
             AddImageToCache(fileName, imageBytes, content);
+        }
+
+        public (string, string)? GetImagePairing(string cacheKey)
+        {
+            // Check if the image is already cached
+            if (_cache.TryGetValue(cacheKey, out byte[] cachedImage))
+            {
+                ImagePairing? deserialized = JsonConvert.DeserializeObject<ImagePairing>(Encoding.ASCII.GetString(cachedImage));
+
+                return (cacheKey, deserialized.Content);
+            }
+
+            return null;
         }
     }
 

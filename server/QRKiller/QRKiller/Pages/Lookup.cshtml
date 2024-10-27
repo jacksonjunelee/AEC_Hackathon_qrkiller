@@ -1,22 +1,24 @@
 ﻿@page
 @model QRKiller.Pages.LookupModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Look Up Code";
 }
 
-<h2>Generate QRKiller Code</h2>
+<h2>Look Up Code</h2>
+
 
 <form method="post" enctype="multipart/form-data">
     <div class="form-group">
-        <label for="Name">Name:</label>
-        <input type="text" name="Name" class="form-control" required />
-        <label for="Content">Content:</label>
-        <input type="text" name="Content" class="form-control" required />
+        <label for="ImageId">Image ID:</label>
+        <input type="text" name="ImageId" asp-for="ImageId" class="form-control" required />
     </div>
-    <div class="form-group">
-        <label for="ImageFile">Choose an image to upload:</label>
-        <input type="file" name="ImageFile" class="form-control" accept="image/*" required />
-    </div>
-    <button type="submit" class="btn btn-primary">Upload</button>
+
+    <button type="submit" class="btn btn-primary">Look Up</button>
 </form>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <p class="text-danger">@Model.ErrorMessage</p>
+}
+
 
