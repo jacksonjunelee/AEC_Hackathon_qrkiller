@@ -20,13 +20,21 @@ def get_embeddings(image):
 train_path = "./imageSeg/data/train"
 train_imgs = os.listdir(train_path)
 
-embeddings_data = []  # Store all embeddings with their metadata
+embeddings_data = [] 
+guids = [
+    'ee908473-e374-4c88-837e-420c4bb0374b',
+    '78c7ac50-dd8a-4151-871b-a599cbb649d0',
+    '29c825e1-1a62-4ded-b087-fa860cfc5743',
+    'b909a979-10ef-45d0-9739-ff2f51d09954',
+    '311dbdad-6baf-417d-a43c-01fdee38f39e',
+    '71805e4d-1579-4fce-80bc-dba31affdd41'
+] 
 
 for index, img_name in enumerate(train_imgs):
     img_path = os.path.join(train_path, img_name)
     image = cv2.imread(img_path)
 
-    # Skip if image is not found or unreadable
+    
     if image is None:
         print(f"Error loading image: {img_name}")
         continue
@@ -36,7 +44,7 @@ for index, img_name in enumerate(train_imgs):
 
     # Add data to the list as a dictionary
     embeddings_data.append({
-        "data": index+1,  # Placeholder for future metadata, currently using the index
+        "data": guids[index],  # Placeholder for future metadata, currently using the index
         "embedding": embedding.tolist()  # Convert NumPy array to list for JSON serialization
     })
 
