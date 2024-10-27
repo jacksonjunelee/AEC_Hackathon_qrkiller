@@ -10,4 +10,4 @@ packages = [
 ]
 python_version = '3.10'  # '3.9' | '3.10' | '3.11' | '3.12' | '3.13' 
 # welcome_text = 'welcome.md'
-registered_name = 'python-services'
+registered_name = 'ifc-viewer'
