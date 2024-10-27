@@ -1,0 +1,17 @@
+﻿@page
+@model QRKiller.Pages.ImagesModel
+@{
+}
+
+
+
+<h2>Image Gallery</h2>
+
+<ul>
+    @foreach (var imageName in Model.Images)
+    {
+        <li>
+            <img src="/api/Image/@imageName" alt="Image" style="width:150px; height:auto;" />
+        </li>
+    }
+</ul>

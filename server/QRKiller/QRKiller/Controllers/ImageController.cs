@@ -26,14 +26,14 @@ namespace QRKiller.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound($"Image '{imageName}' not found: {ex.Message}");
             }
         }
 
 
 
         [HttpPost("/images/")]
-        public async Task<IActionResult> PostImage([FromHeader(Name = "Image-Name")] string imageName)
+        public async Task<IActionResult> PostImage([FromHeader(Name = "Image-Name")] string imageName, [FromHeader(Name = "Content")] string content)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace QRKiller.Controllers
                 {
                     await Request.Body.CopyToAsync(ms);
                     byte[] imageBytes = ms.ToArray();
-                    _imageService.StoreImage(imageName, imageBytes);  // Store image using the image service
+                    _imageService.StoreImage(imageName, imageBytes, content);  // Store image using the image service
                 }
                 return Ok();
             }
