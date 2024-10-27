@@ -1,5 +1,6 @@
 import viktor as vkt
 import requests
+from pathlib import Path
 
 
 class Parametrization(vkt.Parametrization):
@@ -16,8 +17,6 @@ class Controller(vkt.Controller):
         try:
 
             print('running endpoint 1')
-
-            from pathlib import Path
 
             save_path = Path(__file__).parent / 'downloaded_image.jpg'
 
@@ -90,7 +89,8 @@ class Controller(vkt.Controller):
                 return embedding.flatten()
 
             # Load the embeddings from the JSON file
-            with open("image_embeddings.json", "r") as json_file:
+            embedding_path = Path(__file__).parent / "image_embeddings.json"
+            with open(embedding_path, "r") as json_file:
                 stored_embeddings = json.load(json_file)
 
             print('here2')
