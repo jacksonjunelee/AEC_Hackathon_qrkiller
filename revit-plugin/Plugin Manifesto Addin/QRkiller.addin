@@ -2,7 +2,7 @@
 <RevitAddIns>
  <AddIn Type="Command">
        <Name>QRKiller</Name>
-       <FullClassName>QRKiller</FullClassName>
+       <FullClassName>QRKiller.Revit</FullClassName>
        <Text>QRKiller</Text>
        <Description>Selects the views and pushes them online</Description>
        <VisibilityMode>AlwaysVisible</VisibilityMode>
