@@ -41,7 +41,7 @@ def find_closest_match(input_image_path):
     return best_match_data, highest_similarity
 
 # Example usage: Compare an input image with stored embeddings
-input_image_path = "./imageSeg/data/test/test.jpg"
+input_image_path = "./imageSeg/data/test/renderTest.jpg"
 match_data, similarity_score = find_closest_match(input_image_path)
 
 print(f"Best match data: {match_data} with similarity score: {similarity_score:.2f}")
