@@ -3,7 +3,11 @@
 
 app_type = 'simple'
 # assets_path = 'assets'
-# packages = []
-python_version = '3.12'  # '3.9' | '3.10' | '3.11' | '3.12' | '3.13' 
+packages = [
+    "ffmpeg",
+    "libsm6",
+    "libxext6",  
+]
+python_version = '3.10'  # '3.9' | '3.10' | '3.11' | '3.12' | '3.13' 
 # welcome_text = 'welcome.md'
 registered_name = 'python-services'

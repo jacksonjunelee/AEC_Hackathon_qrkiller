@@ -1,1 +1,5 @@
 viktor==14.16.1
+requests
+opencv-python-headless
+tensorflow-cpu
+scikit-learn
