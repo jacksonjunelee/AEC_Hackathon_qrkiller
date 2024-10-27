@@ -3,13 +3,14 @@ import numpy as np
 import os
 import json
 from tensorflow.keras.applications import VGG16
+from getImg import cleanImg
 
 # Load VGG16 model
-vgg = VGG16(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
+vgg = VGG16(weights='imagenet', include_top=False, input_shape=(512, 512, 3))
 
 # Function to generate embeddings from an image
 def get_embeddings(image):
-    resized_image = cv2.resize(image, (224, 224))
+    resized_image = cv2.resize(image, (512, 512))
     normalized_image = resized_image / 255.0  # Normalize pixel values to [0, 1]
     expanded_image = np.expand_dims(normalized_image, axis=0)  # Add batch dimension
     embedding = vgg.predict(expanded_image)
@@ -29,7 +30,7 @@ for index, img_name in enumerate(train_imgs):
     if image is None:
         print(f"Error loading image: {img_name}")
         continue
-
+    image, edge = cleanImg(image)
     # Get the embedding for the current image
     embedding = get_embeddings(image)
 
