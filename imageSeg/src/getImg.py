@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 
 border_colour = (255, 255, 255)
 
@@ -53,29 +54,37 @@ def cleanImg(img):
     titles = ["Original", "Gray", "Blurred", "Edges", "Aligned"]
 
     display_images_grid(images, titles, 2, 3)
-    return aligned_image
+    return aligned_image, edges
 
 def display(img, name):
     cv2.imshow(name, img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-def cropImg(img):
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    mask = np.all(img == border_colour, axis=2)
-    mask = np.logical_not(mask)
-
-    coords = np.argwhere(mask)
-    x0, y0 = coords.min(axis=0)
-    x1, y1 = coords.max(axis=0) + 1
-
-    cropped = img[x0:x1, y0:y1]
-    return cropped
-
 if __name__ == "__main__":
+    '''
     img = cv2.imread("./imageSeg/testImgs/phoneTest.jpg")
     orig = cv2.imread("./imageSeg/testImgs/borderTest.jpg")
-    pre = cleanImg(orig)
-    cv2.imwrite("./imageSeg/testImgs/borderTestCleaned.jpg", pre)
-    final = cleanImg(img)
-    cv2.imwrite("./imageSeg/testImgs/phoneTestCleaned.jpg", final)
+    control = cv2.imread("./imageSeg/testImgs/plansControl.jpg")
+
+    db, dbEdge = cleanImg(orig)
+    test, testEdge = cleanImg(img)
+    control, controlEdge = cleanImg(control)
+
+    
+    cv2.imwrite("./imageSeg/testImgs/borderTestCleaned.jpg", db)
+    cv2.imwrite("./imageSeg/testImgs/phoneTestCleaned.jpg", test)
+    cv2.imwrite("./imageSeg/testImgs/dbEdge.jpg", dbEdge)
+    cv2.imwrite("./imageSeg/testImgs/testEdge.jpg", testEdge)
+    cv2.imwrite("./imageSeg/testImgs/control.jpg", control)
+    cv2.imwrite("./imageSeg/testImgs/controlEdge.jpg", controlEdge)
+    '''
+    train_path = "./imageSeg/data/train"
+    train_imgs = os.listdir(train_path)
+
+    for index, img_name in enumerate(train_imgs):
+        img_path = os.path.join(train_path, img_name)
+        image = cv2.imread(img_path)
+
+        im, edge = cleanImg(image)
+
