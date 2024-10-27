@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+ <AddIn Type="Command">
+       <Name>QRKiller.Revit</Name>
+       <FullClassName>QRKiller.Revit.Class1</FullClassName>
+       <Text>QRKiller.Revit</Text>
+       <Description>Places the Group at Particular Point</Description>
+       <VisibilityMode>AlwaysVisible</VisibilityMode>
+       <Assembly>C:\test\QRKiller.Revit\QRKiller.Revit\bin\Debug\net8.0\QRKiller.Revit.dll"</Assembly>
+       <AddInId>502fe383-2648-4e98-adf8-5e6047f9dc34</AddInId>
+    <VendorId>ADSK</VendorId>
+    <VendorDescription>Autodesk, Inc, www.autodesk.com</VendorDescription>
+ </AddIn>
+</RevitAddIns>
