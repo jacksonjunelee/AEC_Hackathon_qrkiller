@@ -3,60 +3,44 @@ using Autodesk.Revit.Attributes;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
 using static System.Collections.Specialized.BitVector32;
+using System;
+using System.Drawing;
+using System.Windows;
 
 namespace QRKiller.Revit
 {
     [Transaction(TransactionMode.Manual)]
     public class Class1 : IExternalCommand
     {
+       // public class ImageDisplayForm : Form
+     //   {
+      //      private PictureBox pictureBox;
+      //      public ImageDisplayForm(string imagePath)
+      //      {
+       //         this.Text = "View Image";
+       //         this.Size = new System.Drawing.Size(800, 600);
+        //        pictureBox = new PictureBox
+       //         {
+       //             Image = new Bitmap(imagePath),
+        //            SizeMode = PictureBoxSizeMode.Zoom,
+         //           Dock = DockStyle.Fill
+        //        };
+        //        this.Controls.Add(pictureBox);
+        //    }
+     //   }
+
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
             UIDocument uidoc = commandData.Application.ActiveUIDocument;
             Document doc = commandData.Application.ActiveUIDocument.Document;
             SetPlanView(doc, uidoc);
 
-            View activeView = doc.ActiveView;
-            Selection selection = uidoc.Selection;
-            ICollection<ElementId> selectedIds = selection.GetElementIds();
-            FilteredElementCollector collector = new FilteredElementCollector(doc)
-            .OfClass(typeof(Viewport))
-            .WhereElementIsNotElementType();
-
-            foreach (Viewport viewport in collector)
-            {
-                View view = doc.GetElement(viewport.ViewId) as View;
-                TaskDialog.Show("view names", "req view: " + view.Name + "\n" + view.Name);
-                // Process the embedded viewport, such as focusing or exporting
-            }
-
-            //DocumentPreviewSettings settings = doc.GetDocumentPreviewSettings();
-            ////
-            //string info = "";
-            //foreach (View3D v in new FilteredElementCollector(doc).OfClass(typeof(View3D)))
-            //{
-            //    if (v.Name == "{3D}")
-            //    {
-            //        uidoc.ActiveView = v;
-            //    }
-            //}
-            ////
+            //View activeView = doc.ActiveView;
             //Selection selection = uidoc.Selection;
-            //ICollection<ElementId> selectedIds = uidoc.Selection.GetElementIds();
-            //bool t = false;
-            //if (selectedIds.Count == 0)
-            //{
-            //    TaskDialog.Show("Revit", "You haven't selected any elements at all.");
-            //}
-            // else
-            //  {
-            //      string s2 = ProcessSelection(doc, uidoc, selectedIds);
-            //   TaskDialog.Show("Revit", "data copied to clipboard / write json to file\n" + s2);
-            //   t = true;
-            //}
-            // if (t)
-            // {
-            // drawInRhino();
-            //  }
+            //ICollection<ElementId> selectedIds = selection.GetElementIds();
+            //FilteredElementCollector collector = new FilteredElementCollector(doc)
+            //.OfClass(typeof(Viewport))
+            //.WhereElementIsNotElementType();
             return Result.Succeeded;
         }
 
@@ -69,70 +53,45 @@ namespace QRKiller.Revit
             foreach (ViewPlan v in collector)
             {
                 viewNames += v.Name + ", ";
-                if (v.Name.Contains("Level 1"))
-                {
-                    reqView = v.Name;
-                    viewPlan = v;
-                    uidoc.ActiveView = viewPlan;
-                    break;
-                }
+          
             }
 
-            TaskDialog.Show("view names", "req view: " + reqView + "\n" + viewNames);
+            TaskDialog.Show("view test names", "req view: "  + "\n" + viewNames);
         }
 
-        public void set3dView(Autodesk.Revit.DB.Document doc, UIDocument uidoc)
+        public static void ExportViewImage(Document doc, View view, string filePath)
         {
-            FilteredElementCollector collector = new FilteredElementCollector(doc).OfClass(typeof(View3D));
-            View3D view3d = null;
-            string reqView = "";
-            string viewNames = "";
-            foreach (View3D v in collector)
+            if (view == null || !view.CanBePrinted)
             {
-                viewNames += v.Name + ", ";
-                if (v.Name.Contains("{3D}"))
-                {
-                    reqView = v.Name;
-                    view3d = v;
-                    uidoc.ActiveView = view3d;
-                    break;
-                }
+                TaskDialog.Show("Error", "Selected view cannot be exported.");
+                return;
             }
+            // Configure image export options
+            ImageExportOptions options = new ImageExportOptions
+            {
+                FilePath = filePath,
+                FitDirection = FitDirectionType.Horizontal,
+                HLRandWFViewsFileType = ImageFileType.PNG,
+                ImageResolution = ImageResolution.DPI_150,
+                PixelSize = 1024, // Set the size as needed
+                ExportRange = ExportRange.CurrentView,
+                ShadowViewsFileType = ImageFileType.PNG
+            };
+            // Set the name for the output file
+            options.SetViewsAndSheets(new ElementId[] { view.Id });
+            // Export image
+            doc.ExportImage(options);
+            TaskDialog.Show("Export", $"Image exported to {filePath}");
+        }
 
-            TaskDialog.Show("view names", "req view: " + reqView + "\n" + viewNames);
+        public void ShowViewImage(Document doc, View view)
+        {
+            string filePath = @"C:\Users\samahaa\Downloads\aec\AEC_Hackathon_qrkiller\revit-plugin\ImageDrop\"; // Set desired file path
+            ExportViewImage(doc, view, filePath);
+            //ImageDisplayForm displayForm = new ImageDisplayForm(filePath);
+            // displayForm.ShowDialog(); // Display the form with the exported image
         }
 
 
-        }
+    }
 }
-//namespace QRkiller
-//{
-//    [Transaction(TransactionMode.Manual)]
-//    public class Class1 : IExternalApplication
-//    {
-//        public Result OnShutdown(UIControlledApplication application)
-//        {
-//            return Result.Succeeded;
-//;        }
-
-//        public Result OnStartup(UIControlledApplication application)
-//        {
-//            return Result.Succeeded;
-//        }
-//    }
-
-//    [Transaction(TransactionMode.Manual)]
-//    public class Class2 : IExternalCommand
-//    {
-//        //Fill in with code
-//        public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
-//        {
-//            // MyForm form = new MyForm();
-//            //form.ShowDialog();
-
-//            TaskDialog.Show("My Message", "Hello, this is a message from your Revit test add-in.");
-//            return Result.Succeeded;
-
-//        }
-//    }
-//}
