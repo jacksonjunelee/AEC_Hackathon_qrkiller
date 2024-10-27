@@ -4,6 +4,7 @@ import viktor as vkt
 class Parametrization(vkt.Parametrization):
     btn = vkt.SetParamsButton('execute this', 'endpoint1')
     pass # Welcome to VIKTOR! You can add your input fields here. Happy Coding!
+    a = vkt.NumberField('test')
 
 
 class Controller(vkt.Controller):
