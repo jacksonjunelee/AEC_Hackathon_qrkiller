@@ -1,0 +1,26 @@
+﻿@page
+@model QRKiller.Pages.UploadModel
+@{
+    ViewData["Title"] = "Upload Image";
+}
+
+<h2>Upload Image</h2>
+
+<form method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="Content">Content</label>
+        <input type="text" name="Content" asp-for="Content" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label for="ImageFile">Choose an image to upload:</label>
+        <input type="file" name="ImageFile" asp-for="ImageFile" class="form-control" accept="image/*" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Upload</button>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <p class="text-danger">@Model.ErrorMessage</p>
+}
+
