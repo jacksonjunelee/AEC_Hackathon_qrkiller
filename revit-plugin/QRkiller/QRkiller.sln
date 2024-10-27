@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34701.34
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QRkiller", "QRkiller\QRkiller.csproj", "{2981A674-660B-4F34-A8BA-E5CD65AE0CFA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2981A674-660B-4F34-A8BA-E5CD65AE0CFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2981A674-660B-4F34-A8BA-E5CD65AE0CFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2981A674-660B-4F34-A8BA-E5CD65AE0CFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2981A674-660B-4F34-A8BA-E5CD65AE0CFA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6B87CA1C-8353-4940-9BD2-1814C1B60478}
+	EndGlobalSection
+EndGlobal
