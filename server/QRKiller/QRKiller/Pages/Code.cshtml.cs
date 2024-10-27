@@ -9,6 +9,7 @@ namespace QRKiller.Pages
         private readonly ImageService _imageService;
 
         public (string, string) imagePairing { get; set; } = (string.Empty, string.Empty);
+
         public CodeModel(ImageService imageService)
         {
             _imageService = imageService;

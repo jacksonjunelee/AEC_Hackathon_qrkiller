@@ -9,10 +9,9 @@
 
 <form method="post" enctype="multipart/form-data">
     <div class="form-group">
-        <label for="ImageId">Image ID:</label>
-        <input type="text" name="ImageId" asp-for="ImageId" class="form-control" required />
+        <label for="ImageFile">Choose an image to upload:</label>
+        <input type="file" name="ImageFile" asp-for="ImageFile" class="form-control" accept="image/*" required />
     </div>
-
     <button type="submit" class="btn btn-primary">Look Up</button>
 </form>
 

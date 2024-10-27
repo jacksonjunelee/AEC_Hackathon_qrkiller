@@ -1,3 +1,4 @@
+using System.Text;
 using QRKiller.Core.Services;
 
 namespace QRKiller
@@ -37,5 +38,7 @@ namespace QRKiller
             app.Run();
             
         }
+
+
     }
 }

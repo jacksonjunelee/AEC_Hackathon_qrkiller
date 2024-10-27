@@ -26,26 +26,26 @@ namespace QRKiller.Pages
             _imageService = imageService;
         }
 
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (string.IsNullOrEmpty(CameraCapture))
-            {
-                ErrorMessage = "No image captured.";
-                UploadSuccess = false;
-                return Page();
-            }
+        //public async Task<IActionResult> OnPostAsync()
+        //{
+        //    if (string.IsNullOrEmpty(CameraCapture))
+        //    {
+        //        ErrorMessage = "No image captured.";
+        //        UploadSuccess = false;
+        //        return Page();
+        //    }
 
-            // Decode the Base64 image data
-            var data = new Regex(@"^data:image\/[a-z]+;base64,").Replace(CameraCapture, "");
-            var imageBytes = Convert.FromBase64String(data);
+        //    // Decode the Base64 image data
+        //    var data = new Regex(@"^data:image\/[a-z]+;base64,").Replace(CameraCapture, "");
+        //    var imageBytes = Convert.FromBase64String(data);
 
-            var fileName = Guid.NewGuid() + ".png";
+        //    var fileName = Guid.NewGuid() + ".png";
 
-            _imageService.StoreImage(fileName, imageBytes);
+        //    _imageService.StoreImage(fileName, imageBytes);
 
-            UploadedFileName = fileName;
-            UploadSuccess = true;
-            return Page();
-        }
+        //    UploadedFileName = fileName;
+        //    UploadSuccess = true;
+        //    return Page();
+        //}
     }
 }
