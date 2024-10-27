@@ -12,6 +12,7 @@ namespace QRKiller.Revit
     [Transaction(TransactionMode.Manual)]
     public class Class1 : IExternalCommand
     {
+        private static int instanceCount = 0;
        // public class ImageDisplayForm : Form
      //   {
       //      private PictureBox pictureBox;
@@ -33,32 +34,19 @@ namespace QRKiller.Revit
         {
             UIDocument uidoc = commandData.Application.ActiveUIDocument;
             Document doc = commandData.Application.ActiveUIDocument.Document;
-            SetPlanView(doc, uidoc);
+          //  SetPlanView(doc, uidoc);
 
-            //View activeView = doc.ActiveView;
-            //Selection selection = uidoc.Selection;
-            //ICollection<ElementId> selectedIds = selection.GetElementIds();
-            //FilteredElementCollector collector = new FilteredElementCollector(doc)
-            //.OfClass(typeof(Viewport))
-            //.WhereElementIsNotElementType();
+            View activeView = doc.ActiveView;
+
+            // Inside the Execute method or as a separate method
+            string imagePath = ExportActiveViewAsImage(doc, activeView);
+           //  ShowViewImage(doc, activeView);
+            instanceCount++;
+
+            TaskDialog.Show("view test names", "req view: " + activeView.Name + "\n" + imagePath);
+
             return Result.Succeeded;
         }
-
-        private void SetPlanView(Document doc, UIDocument uidoc)
-        {
-            FilteredElementCollector collector = new FilteredElementCollector(doc).OfClass(typeof(ViewPlan));
-            ViewPlan viewPlan = null;
-            string reqView = "";
-            string viewNames = "";
-            foreach (ViewPlan v in collector)
-            {
-                viewNames += v.Name + ", ";
-          
-            }
-
-            TaskDialog.Show("view test names", "req view: "  + "\n" + viewNames);
-        }
-
         public static void ExportViewImage(Document doc, View view, string filePath)
         {
             if (view == null || !view.CanBePrinted)
@@ -90,6 +78,43 @@ namespace QRKiller.Revit
             ExportViewImage(doc, view, filePath);
             //ImageDisplayForm displayForm = new ImageDisplayForm(filePath);
             // displayForm.ShowDialog(); // Display the form with the exported image
+            return;
+        }
+
+        private string ExportActiveViewAsImage(Document doc, View view)
+        {
+            // Define the file path for the image
+            string tempImagePath = @"C:\Users\samahaa\Downloads\aec\AEC_Hackathon_qrkiller\revit-plugin\ImageDrop\" + "Document-" + GetInstanceCount() + ".png"; // Set desired file path
+
+            // Set up image export options
+            ImageExportOptions options = new ImageExportOptions
+            {
+                FilePath = tempImagePath,
+                FitDirection = FitDirectionType.Horizontal,
+                HLRandWFViewsFileType = ImageFileType.PNG,
+                ImageResolution = ImageResolution.DPI_150,
+                ExportRange = ExportRange.CurrentView,
+                ZoomType = ZoomFitType.FitToPage,
+                ShadowViewsFileType = ImageFileType.PNG
+            };
+
+            // Start a transaction (required by the API even for read operations)
+            using (Transaction tx = new Transaction(doc, "Export Active View"))
+            {
+                tx.Start();
+
+                // Export the current view as an image
+                doc.ExportImage(options);
+
+                tx.Commit();
+            }
+
+            return tempImagePath;
+        }
+         
+        public static int GetInstanceCount()
+        {
+            return instanceCount;
         }
 
 
